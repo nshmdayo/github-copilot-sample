@@ -19,7 +19,7 @@ export default function Home() {
   const [filters, setFilters] = useState<TodoFilters>({});
   const [isLoginMode, setIsLoginMode] = useState(true);
 
-  // Todoリストの取得
+  // Fetch Todo list
   const fetchTodos = async () => {
     if (!isAuthenticated) return;
     
@@ -34,13 +34,13 @@ export default function Home() {
     }
   };
 
-  // 認証状態とフィルターが変更されたときにTodoリストを再取得
+  // Re-fetch Todo list when authentication state and filter change
   useEffect(() => {
     fetchTodos();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, filters]);
 
-  // Todo作成
+  // Create Todo
   const handleCreateTodo = async (data: CreateTodoRequest) => {
     try {
       const newTodo = await TodoAPI.createTodo(data);
@@ -52,7 +52,7 @@ export default function Home() {
     }
   };
 
-  // Todo完了状態の切り替え
+  // Toggle Todo completion status
   const handleToggleTodo = async (id: string, completed: boolean) => {
     try {
       const updatedTodo = await TodoAPI.toggleTodo(id, completed);
@@ -67,13 +67,13 @@ export default function Home() {
     }
   };
 
-  // Todo編集（このサンプルでは編集フォームは省略）
+  // Todo editing (edit form omitted in this sample)
   const handleEditTodo = (todo: Todo) => {
     console.log('Edit todo:', todo);
-    // TODO: 編集フォームの実装
+    // TODO: Implement edit form
   };
 
-  // Todo削除
+  // Delete Todo
   const handleDeleteTodo = async (id: string) => {
     try {
       await TodoAPI.deleteTodo(id);
@@ -84,17 +84,17 @@ export default function Home() {
     }
   };
 
-  // ログイン処理
+  // Login process
   const handleLogin = async (data: { email: string; password: string }) => {
     await login(data.email, data.password);
   };
 
-  // 登録処理
+  // Registration process
   const handleRegister = async (data: { name: string; email: string; password: string }) => {
     await register(data.name, data.email, data.password);
   };
 
-  // 認証状態の読み込み中
+  // Loading authentication state
   if (authLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -103,7 +103,7 @@ export default function Home() {
     );
   }
 
-  // 未認証の場合はログイン/登録フォームを表示
+  // Show login/registration form if not authenticated
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -122,21 +122,21 @@ export default function Home() {
     );
   }
 
-  // 認証済みの場合はTodoアプリを表示
+  // Show Todo app if authenticated
   return (
     <Layout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-900">My Todos</h2>
           <Button onClick={() => setShowForm(!showForm)}>
-            {showForm ? 'フォームを閉じる' : '新しいTodoを作成'}
+            {showForm ? 'Close Form' : 'Create New Todo'}
           </Button>
         </div>
 
         {showForm && (
           <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
             <h3 className="text-lg font-medium text-gray-900 mb-4">
-              新しいTodoを作成
+              Create New Todo
             </h3>
             <TodoForm onSubmit={handleCreateTodo} />
           </div>

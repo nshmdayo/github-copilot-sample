@@ -1,60 +1,60 @@
 # Web Todo Application
 
-フロントエンド（Next.js + Tailwind CSS）、バックエンド（Go言語）、インフラ（AWS + Terraform）で構成されるWeb Todoアプリケーション。
+A Web Todo application built with Frontend (Next.js + Tailwind CSS), Backend (Go), and Infrastructure (AWS + Terraform).
 
-## 🏗️ アーキテクチャ
+## 🏗️ Architecture
 
-- **フロントエンド**: Next.js 14 + Tailwind CSS + TypeScript
-- **バックエンド**: Go + Gin + GORM + PostgreSQL
-- **インフラ**: AWS ECS + RDS + CloudFront + Terraform
+- **Frontend**: Next.js 14 + Tailwind CSS + TypeScript
+- **Backend**: Go + Gin + GORM + PostgreSQL
+- **Infrastructure**: AWS ECS + RDS + CloudFront + Terraform
 - **CI/CD**: GitHub Actions
 
-## 🚀 クイックスタート
+## 🚀 Quick Start
 
-### 1. 初期セットアップ
+### 1. Initial Setup
 
 ```bash
-# リポジトリをクローン
+# Clone repository
 git clone https://github.com/nshmdayo/github-copilot-sample.git
 cd github-copilot-sample
 
-# セットアップスクリプトを実行
+# Run setup script
 ./scripts/setup.sh
 ```
 
-### 2. 開発環境起動
+### 2. Start Development Environment
 
 ```bash
-# 開発環境を起動
+# Start development environment
 ./scripts/dev-start.sh
 ```
 
-### 3. アクセス
+### 3. Access
 
-- **フロントエンド**: http://localhost:3000
-- **バックエンドAPI**: http://localhost:8080
-- **API ドキュメント**: http://localhost:8080/swagger/index.html
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8080
+- **API Documentation**: http://localhost:8080/swagger/index.html
 
-## 📁 プロジェクト構造
+## 📁 Project Structure
 
 ```
-├── frontend/              # Next.js アプリケーション
-├── backend/               # Go API サーバー
-├── infrastructure/        # Terraform 設定
-├── .github/               # GitHub Actions & 開発指示書
-├── scripts/               # 開発・運用スクリプト
-└── docker-compose.yml     # ローカル開発環境
+├── frontend/              # Next.js application
+├── backend/               # Go API server
+├── infrastructure/        # Terraform configuration
+├── .github/               # GitHub Actions & development instructions
+├── scripts/               # Development & operation scripts
+└── docker-compose.yml     # Local development environment
 ```
 
-## 🔧 開発ガイド
+## 🔧 Development Guide
 
-詳細な開発指示については、以下のファイルを参照してください：
+For detailed development instructions, refer to the following files:
 
-- [全体指示書](.github/instructions/project.instructions.md)
-- [フロントエンド](.github/instructions/frontend.instructions.md)
-- [バックエンド](.github/instructions/backend.instructions.md)
-- [インフラ](.github/instructions/infrastructure.instructions.md)
+- [Project Instructions](.github/instructions/project.instructions.md)
+- [Frontend](.github/instructions/frontend.instructions.md)
+- [Backend](.github/instructions/backend.instructions.md)
+- [Infrastructure](.github/instructions/infrastructure.instructions.md)
 
-## 📝 ライセンス
+## 📝 License
 
 MIT License

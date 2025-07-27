@@ -15,13 +15,13 @@ class ApiClient {
   ): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
     
-    // デフォルトヘッダー
+    // Default headers
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       ...(options.headers as Record<string, string>),
     };
 
-    // 認証トークンの追加
+    // Add authentication token
     const token = this.getToken();
     if (token) {
       headers.Authorization = `Bearer ${token}`;
@@ -39,7 +39,7 @@ class ApiClient {
         await this.handleErrorResponse(response);
       }
 
-      // レスポンスが空の場合の処理
+      // Handle empty response
       if (response.status === 204) {
         return {} as T;
       }
@@ -70,10 +70,10 @@ class ApiClient {
       };
     }
 
-    // 認証エラーの場合はトークンを削除
+    // Remove token on authentication error
     if (response.status === 401) {
       this.removeToken();
-      // 必要に応じてログインページにリダイレクト
+      // Redirect to login page if necessary
       if (typeof window !== 'undefined') {
         window.location.href = '/login';
       }
@@ -92,14 +92,14 @@ class ApiClient {
     localStorage.removeItem('auth_token');
   }
 
-  // GET リクエスト
+  // GET request
   async get<T>(endpoint: string): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'GET',
     });
   }
 
-  // POST リクエスト
+  // POST request
   async post<T>(endpoint: string, data?: unknown): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'POST',
@@ -107,7 +107,7 @@ class ApiClient {
     });
   }
 
-  // PUT リクエスト
+  // PUT request
   async put<T>(endpoint: string, data?: unknown): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PUT',
@@ -115,14 +115,14 @@ class ApiClient {
     });
   }
 
-  // DELETE リクエスト
+  // DELETE request
   async delete<T>(endpoint: string): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'DELETE',
     });
   }
 
-  // PATCH リクエスト
+  // PATCH request
   async patch<T>(endpoint: string, data?: unknown): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PATCH',
@@ -130,19 +130,19 @@ class ApiClient {
     });
   }
 
-  // トークンの設定
+  // Set token
   setToken(token: string): void {
     if (typeof window === 'undefined') return;
     localStorage.setItem('auth_token', token);
   }
 
-  // トークンの削除
+  // Remove token
   clearToken(): void {
     this.removeToken();
   }
 }
 
-// デフォルトのAPIクライアントインスタンス
+// Default API client instance
 export const apiClient = new ApiClient();
 
 export default ApiClient;

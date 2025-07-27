@@ -39,12 +39,12 @@ export function getPriorityColor(priority: 'low' | 'medium' | 'high'): string {
 export function getPriorityLabel(priority: 'low' | 'medium' | 'high'): string {
   switch (priority) {
     case 'high':
-      return '高';
+      return 'High';
     case 'medium':
-      return '中';
+      return 'Medium';
     case 'low':
-      return '低';
+      return 'Low';
     default:
-      return '不明';
+      return 'Unknown';
   }
 }

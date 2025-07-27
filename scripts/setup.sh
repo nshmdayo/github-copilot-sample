@@ -1,20 +1,20 @@
 #!/bin/bash
 
 # Web Todo App - Setup Script
-# フロントエンド（Next.js）、バックエンド（Go）、インフラ（Terraform）の初期セットアップ
+# Initial setup for Frontend (Next.js), Backend (Go), Infrastructure (Terraform)
 
 set -e
 
-echo "🚀 Web Todo App のセットアップを開始します..."
+echo "🚀 Starting Web Todo App setup..."
 
-# カラー定義
+# Color definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# ヘルパー関数
+# Helper functions
 print_info() {
     echo -e "${BLUE}ℹ️  $1${NC}"
 }
@@ -31,29 +31,29 @@ print_error() {
     echo -e "${RED}❌ $1${NC}"
 }
 
-# 必要なツールのチェック
+# Check required tools
 check_requirements() {
-    print_info "必要なツールの確認中..."
+    print_info "Checking required tools..."
     
     local missing_tools=()
     
     # Node.js
     if ! command -v node &> /dev/null; then
-        missing_tools+=("Node.js (v18以上)")
+        missing_tools+=("Node.js (v18 or higher)")
     else
         NODE_VERSION=$(node --version | cut -d'v' -f2 | cut -d'.' -f1)
         if [ "$NODE_VERSION" -lt 18 ]; then
-            missing_tools+=("Node.js (現在: v$NODE_VERSION, 必要: v18以上)")
+            missing_tools+=("Node.js (current: v$NODE_VERSION, required: v18 or higher)")
         fi
     fi
     
     # Go
     if ! command -v go &> /dev/null; then
-        missing_tools+=("Go (v1.21以上)")
+        missing_tools+=("Go (v1.21 or higher)")
     else
         GO_VERSION=$(go version | cut -d' ' -f3 | cut -d'o' -f2 | cut -d'.' -f2)
         if [ "$GO_VERSION" -lt 21 ]; then
-            missing_tools+=("Go (現在: $(go version), 必要: v1.21以上)")
+            missing_tools+=("Go (current: $(go version), required: v1.21 or higher)")
         fi
     fi
     
@@ -69,7 +69,7 @@ check_requirements() {
     
     # Terraform
     if ! command -v terraform &> /dev/null; then
-        missing_tools+=("Terraform (v1.5以上)")
+        missing_tools+=("Terraform (v1.5 or higher)")
     fi
     
     # Git
@@ -78,30 +78,30 @@ check_requirements() {
     fi
     
     if [ ${#missing_tools[@]} -ne 0 ]; then
-        print_error "以下のツールが不足しています:"
+        print_error "The following tools are missing:"
         for tool in "${missing_tools[@]}"; do
             echo "  - $tool"
         done
         echo ""
-        echo "必要なツールをインストールしてから再実行してください。"
+        echo "Please install the required tools and run again."
         exit 1
     fi
     
-    print_success "すべての必要なツールが確認できました"
+    print_success "All required tools have been verified"
 }
 
-# フロントエンドセットアップ
+# Frontend setup
 setup_frontend() {
-    print_info "フロントエンド（Next.js + Tailwind CSS）のセットアップ中..."
+    print_info "Setting up frontend (Next.js + Tailwind CSS)..."
     
     if [ ! -d "frontend" ]; then
         mkdir -p frontend
         cd frontend
         
-        # Next.jsプロジェクトの初期化
+        # Initialize Next.js project
         npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"
         
-        # 追加パッケージのインストール
+        # Install additional packages
         npm install --save \
             @hookform/resolvers \
             react-hook-form \
@@ -123,24 +123,24 @@ setup_frontend() {
             prettier-plugin-tailwindcss
         
         cd ..
-        print_success "フロントエンドのセットアップが完了しました"
+        print_success "Frontend setup completed"
     else
-        print_warning "フロントエンドディレクトリが既に存在します。スキップします。"
+        print_warning "Frontend directory already exists. Skipping."
     fi
 }
 
-# バックエンドセットアップ
+# Backend setup
 setup_backend() {
-    print_info "バックエンド（Go + Gin + GORM）のセットアップ中..."
+    print_info "Setting up backend (Go + Gin + GORM)..."
     
     if [ ! -d "backend" ]; then
         mkdir -p backend
         cd backend
         
-        # Go モジュールの初期化
+        # Initialize Go module
         go mod init github.com/nshmdayo/github-copilot-sample/backend
         
-        # 必要なパッケージのインストール
+        # Install required packages
         go get github.com/gin-gonic/gin
         go get gorm.io/gorm
         go get gorm.io/driver/postgres
@@ -150,7 +150,7 @@ setup_backend() {
         go get github.com/sirupsen/logrus
         go get golang.org/x/crypto/bcrypt
         
-        # 開発・テスト用パッケージ
+        # Development and testing packages
         go get github.com/stretchr/testify
         go get github.com/DATA-DOG/go-sqlmock
         go get github.com/golang-migrate/migrate/v4
@@ -160,28 +160,28 @@ setup_backend() {
         go get github.com/swaggo/files
         
         cd ..
-        print_success "バックエンドのセットアップが完了しました"
+        print_success "Backend setup completed"
     else
-        print_warning "バックエンドディレクトリが既に存在します。スキップします。"
+        print_warning "Backend directory already exists. Skipping."
     fi
 }
 
-# インフラセットアップ
+# Infrastructure setup
 setup_infrastructure() {
-    print_info "インフラ（Terraform + AWS）のセットアップ中..."
+    print_info "Setting up infrastructure (Terraform + AWS)..."
     
     if [ ! -d "infrastructure" ]; then
         mkdir -p infrastructure/{environments/{dev,staging,prod},modules/{networking,security,database,ecs,alb,cloudfront,route53},scripts}
         
-        print_success "インフラディレクトリ構造を作成しました"
+        print_success "Infrastructure directory structure created"
     else
-        print_warning "インフラディレクトリが既に存在します。スキップします。"
+        print_warning "Infrastructure directory already exists. Skipping."
     fi
 }
 
-# Docker設定ファイル作成
+# Create Docker configuration files
 setup_docker() {
-    print_info "Docker設定ファイルの作成中..."
+    print_info "Creating Docker configuration files..."
     
     # docker-compose.yml
     if [ ! -f "docker-compose.yml" ]; then
@@ -250,30 +250,30 @@ networks:
   todoapp-network:
     driver: bridge
 EOF
-        print_success "docker-compose.yml を作成しました"
+        print_success "docker-compose.yml created"
     fi
 }
 
-# 環境変数ファイル作成
+# Create environment variable files
 setup_env_files() {
-    print_info "環境変数ファイルの作成中..."
+    print_info "Creating environment variable files..."
     
-    # フロントエンド環境変数
+    # Frontend environment variables
     if [ ! -f "frontend/.env.local" ]; then
         mkdir -p frontend
         cat > frontend/.env.local << 'EOF'
-# フロントエンド環境変数
+# Frontend environment variables
 NEXT_PUBLIC_API_URL=http://localhost:8080/api
 NEXT_PUBLIC_APP_NAME=Todo App
 EOF
-        print_success "frontend/.env.local を作成しました"
+        print_success "frontend/.env.local created"
     fi
     
-    # バックエンド環境変数
+    # Backend environment variables
     if [ ! -f "backend/.env" ]; then
         mkdir -p backend
         cat > backend/.env << 'EOF'
-# バックエンド環境変数
+# Backend environment variables
 PORT=8080
 HOST=localhost
 
@@ -292,13 +292,13 @@ JWT_EXPIRATION=24h
 # Environment
 GO_ENV=development
 EOF
-        print_success "backend/.env を作成しました"
+        print_success "backend/.env created"
     fi
 }
 
-# Git設定
+# Git configuration
 setup_git() {
-    print_info "Git設定の確認中..."
+    print_info "Checking Git configuration..."
     
     if [ ! -f ".gitignore" ]; then
         cat > .gitignore << 'EOF'
@@ -355,49 +355,49 @@ Thumbs.db
 tmp/
 temp/
 EOF
-        print_success ".gitignore を作成しました"
+        print_success ".gitignore created"
     fi
 }
 
-# 開発用スクリプト作成
+# Create development scripts
 setup_dev_scripts() {
-    print_info "開発用スクリプトの作成中..."
+    print_info "Creating development scripts..."
     
-    # 開発環境起動スクリプト
+    # Development environment startup script
     cat > scripts/dev-start.sh << 'EOF'
 #!/bin/bash
 
-echo "🚀 開発環境を起動中..."
+echo "🚀 Starting development environment..."
 
-# Docker Composeで起動
+# Start with Docker Compose
 docker-compose up -d postgres
 
-echo "PostgreSQLの起動を待機中..."
+echo "Waiting for PostgreSQL to start..."
 sleep 10
 
-# バックエンド起動（バックグラウンド）
+# Start backend (background)
 cd backend
 go run cmd/server/main.go &
 BACKEND_PID=$!
 cd ..
 
-echo "バックエンドの起動を待機中..."
+echo "Waiting for backend to start..."
 sleep 5
 
-# フロントエンド起動
+# Start frontend
 cd frontend
 npm run dev &
 FRONTEND_PID=$!
 cd ..
 
-echo "✅ 開発環境が起動しました!"
-echo "📱 フロントエンド: http://localhost:3000"
-echo "🔧 バックエンド: http://localhost:8080"
-echo "📚 API ドキュメント: http://localhost:8080/swagger/index.html"
+echo "✅ Development environment started!"
+echo "📱 Frontend: http://localhost:3000"
+echo "🔧 Backend: http://localhost:8080"
+echo "📚 API Documentation: http://localhost:8080/swagger/index.html"
 echo ""
-echo "停止するには Ctrl+C を押してください"
+echo "Press Ctrl+C to stop"
 
-# トラップでプロセスを終了
+# Trap to terminate processes
 trap "kill $BACKEND_PID $FRONTEND_PID; docker-compose down" EXIT
 
 wait
@@ -405,105 +405,105 @@ EOF
     
     chmod +x scripts/dev-start.sh
     
-    # ビルドスクリプト
+    # Build script
     cat > scripts/build-all.sh << 'EOF'
 #!/bin/bash
 
-echo "🔨 全体ビルドを開始します..."
+echo "🔨 Starting full build..."
 
-# バックエンドビルド
-echo "🔧 バックエンドビルド中..."
+# Backend build
+echo "🔧 Building backend..."
 cd backend
 go build -o bin/server ./cmd/server
 cd ..
 
-# フロントエンドビルド
-echo "📱 フロントエンドビルド中..."
+# Frontend build
+echo "📱 Building frontend..."
 cd frontend
 npm run build
 cd ..
 
-echo "✅ 全体ビルドが完了しました!"
+echo "✅ Full build completed!"
 EOF
     
     chmod +x scripts/build-all.sh
     
-    print_success "開発用スクリプトを作成しました"
+    print_success "Development scripts created"
 }
 
-# READMEファイル更新
+# Update README file
 update_readme() {
-    print_info "README.md の更新中..."
+    print_info "Updating README.md..."
     
     cat > README.md << 'EOF'
 # Web Todo Application
 
-フロントエンド（Next.js + Tailwind CSS）、バックエンド（Go言語）、インフラ（AWS + Terraform）で構成されるWeb Todoアプリケーション。
+A Web Todo application built with Frontend (Next.js + Tailwind CSS), Backend (Go), and Infrastructure (AWS + Terraform).
 
-## 🏗️ アーキテクチャ
+## 🏗️ Architecture
 
-- **フロントエンド**: Next.js 14 + Tailwind CSS + TypeScript
-- **バックエンド**: Go + Gin + GORM + PostgreSQL
-- **インフラ**: AWS ECS + RDS + CloudFront + Terraform
+- **Frontend**: Next.js 14 + Tailwind CSS + TypeScript
+- **Backend**: Go + Gin + GORM + PostgreSQL
+- **Infrastructure**: AWS ECS + RDS + CloudFront + Terraform
 - **CI/CD**: GitHub Actions
 
-## 🚀 クイックスタート
+## 🚀 Quick Start
 
-### 1. 初期セットアップ
+### 1. Initial Setup
 
 ```bash
-# リポジトリをクローン
+# Clone repository
 git clone https://github.com/nshmdayo/github-copilot-sample.git
 cd github-copilot-sample
 
-# セットアップスクリプトを実行
+# Run setup script
 ./scripts/setup.sh
 ```
 
-### 2. 開発環境起動
+### 2. Start Development Environment
 
 ```bash
-# 開発環境を起動
+# Start development environment
 ./scripts/dev-start.sh
 ```
 
-### 3. アクセス
+### 3. Access
 
-- **フロントエンド**: http://localhost:3000
-- **バックエンドAPI**: http://localhost:8080
-- **API ドキュメント**: http://localhost:8080/swagger/index.html
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8080
+- **API Documentation**: http://localhost:8080/swagger/index.html
 
-## 📁 プロジェクト構造
+## 📁 Project Structure
 
 ```
-├── frontend/              # Next.js アプリケーション
-├── backend/               # Go API サーバー
-├── infrastructure/        # Terraform 設定
-├── .github/               # GitHub Actions & 開発指示書
-├── scripts/               # 開発・運用スクリプト
-└── docker-compose.yml     # ローカル開発環境
+├── frontend/              # Next.js application
+├── backend/               # Go API server
+├── infrastructure/        # Terraform configuration
+├── .github/               # GitHub Actions & development instructions
+├── scripts/               # Development & operation scripts
+└── docker-compose.yml     # Local development environment
 ```
 
-## 🔧 開発ガイド
+## 🔧 Development Guide
 
-詳細な開発指示については、以下のファイルを参照してください：
+For detailed development instructions, refer to the following files:
 
-- [全体指示書](.github/instructions/project.instructions.md)
-- [フロントエンド](.github/instructions/frontend.instructions.md)
-- [バックエンド](.github/instructions/backend.instructions.md)
-- [インフラ](.github/instructions/infrastructure.instructions.md)
+- [Project Instructions](.github/instructions/project.instructions.md)
+- [Frontend](.github/instructions/frontend.instructions.md)
+- [Backend](.github/instructions/backend.instructions.md)
+- [Infrastructure](.github/instructions/infrastructure.instructions.md)
 
-## 📝 ライセンス
+## 📝 License
 
 MIT License
 EOF
     
-    print_success "README.md を更新しました"
+    print_success "README.md updated"
 }
 
-# メイン実行
+# Main execution
 main() {
-    echo "🎯 Web Todo App セットアップスクリプト"
+    echo "🎯 Web Todo App Setup Script"
     echo "======================================"
     
     check_requirements
@@ -517,16 +517,16 @@ main() {
     update_readme
     
     echo ""
-    echo "🎉 セットアップが完了しました！"
+    echo "🎉 Setup completed!"
     echo ""
-    echo "次のステップ:"
-    echo "1. ./scripts/dev-start.sh で開発環境を起動"
-    echo "2. GitHub Copilot を活用してアプリ開発を開始"
-    echo "3. .github/instructions/ 内の指示書を参照"
+    echo "Next steps:"
+    echo "1. Run ./scripts/dev-start.sh to start development environment"
+    echo "2. Start app development with GitHub Copilot"
+    echo "3. Refer to instruction files in .github/instructions/"
     echo ""
     echo "Happy coding! 🚀"
 }
 
-# スクリプト実行
+# Execute script
 main "$@"
 EOF

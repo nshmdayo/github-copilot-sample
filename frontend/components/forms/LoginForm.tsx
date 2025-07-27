@@ -31,7 +31,7 @@ export function LoginForm({ onSubmit, onToggleForm }: LoginFormProps) {
     try {
       await onSubmit(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '予期しないエラーが発生しました');
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -41,8 +41,8 @@ export function LoginForm({ onSubmit, onToggleForm }: LoginFormProps) {
     <div className="w-full max-w-md mx-auto">
       <div className="bg-white py-8 px-6 shadow-lg rounded-lg">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-900">ログイン</h2>
-          <p className="mt-2 text-gray-600">アカウントにサインインしてください</p>
+          <h2 className="text-3xl font-bold text-gray-900">Login</h2>
+          <p className="mt-2 text-gray-600">Please sign in to your account</p>
         </div>
 
         {error && (
@@ -54,7 +54,7 @@ export function LoginForm({ onSubmit, onToggleForm }: LoginFormProps) {
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
           <Input
             type="email"
-            label="メールアドレス"
+            label="Email Address"
             placeholder="your-email@example.com"
             error={errors.email?.message}
             {...register('email')}
@@ -62,8 +62,8 @@ export function LoginForm({ onSubmit, onToggleForm }: LoginFormProps) {
 
           <Input
             type="password"
-            label="パスワード"
-            placeholder="パスワードを入力してください"
+            label="Password"
+            placeholder="Enter your password"
             error={errors.password?.message}
             {...register('password')}
           />
@@ -74,19 +74,19 @@ export function LoginForm({ onSubmit, onToggleForm }: LoginFormProps) {
             isLoading={isLoading}
             disabled={isLoading}
           >
-            ログイン
+            Login
           </Button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            アカウントをお持ちでない方は{' '}
+            Don&apos;t have an account?{' '}
             <button
               type="button"
               onClick={onToggleForm}
               className="font-medium text-blue-600 hover:text-blue-500"
             >
-              新規登録
+              Sign up
             </button>
           </p>
         </div>

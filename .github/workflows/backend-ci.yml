@@ -344,7 +344,7 @@ jobs:
 
       - name: Run smoke tests
         run: |
-          # 基本的なAPIエンドポイントのテスト
+          # Basic API endpoint testing
           curl -f https://api.example.com/health
           curl -f https://api.example.com/api/todos -H "Authorization: Bearer ${{ secrets.TEST_TOKEN }}"
 

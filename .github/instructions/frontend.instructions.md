@@ -1,63 +1,63 @@
 # Frontend Development Instructions - Next.js + Tailwind CSS
 
-## プロジェクト概要
-Web TodoアプリのフロントエンドをNext.js 14（App Router）とTailwind CSSで構築します。
+## Project Overview
+Build the frontend of a Web Todo application using Next.js 14 (App Router) and Tailwind CSS.
 
-## 技術スタック
+## Technology Stack
 - **Framework**: Next.js 14 (App Router)
 - **Styling**: Tailwind CSS
-- **TypeScript**: 厳密な型定義を使用
+- **TypeScript**: Use strict type definitions
 - **State Management**: React hooks + Context API
 - **HTTP Client**: fetch API / axios
-- **UI Components**: Headless UI / Radix UI (必要に応じて)
+- **UI Components**: Headless UI / Radix UI (as needed)
 - **Form Handling**: React Hook Form + Zod
 - **Testing**: Jest + React Testing Library
 - **Linting**: ESLint + Prettier
 
-## プロジェクト構造
+## Project Structure
 ```
 frontend/
-├── app/                          # App Router用ディレクトリ
-│   ├── (auth)/                   # 認証関連のルートグループ
+├── app/                          # App Router directory
+│   ├── (auth)/                   # Authentication route groups
 │   │   ├── login/
 │   │   └── register/
-│   ├── todos/                    # Todo関連ページ
-│   ├── api/                      # API routes (必要に応じて)
-│   ├── globals.css               # グローバルスタイル
-│   ├── layout.tsx                # ルートレイアウト
-│   └── page.tsx                  # ホームページ
-├── components/                   # 再利用可能コンポーネント
-│   ├── ui/                       # 基本UIコンポーネント
-│   ├── forms/                    # フォームコンポーネント
-│   ├── layouts/                  # レイアウトコンポーネント
-│   └── features/                 # 機能別コンポーネント
+│   ├── todos/                    # Todo-related pages
+│   ├── api/                      # API routes (if needed)
+│   ├── globals.css               # Global styles
+│   ├── layout.tsx                # Root layout
+│   └── page.tsx                  # Home page
+├── components/                   # Reusable components
+│   ├── ui/                       # Basic UI components
+│   ├── forms/                    # Form components
+│   ├── layouts/                  # Layout components
+│   └── features/                 # Feature-specific components
 │       └── todos/
-├── lib/                          # ユーティリティ・設定
-│   ├── api.ts                    # API通信関数
-│   ├── auth.ts                   # 認証関連
-│   ├── utils.ts                  # ユーティリティ関数
-│   └── validations.ts            # バリデーションスキーマ
-├── hooks/                        # カスタムフック
-├── types/                        # TypeScript型定義
+├── lib/                          # Utilities & configuration
+│   ├── api.ts                    # API communication functions
+│   ├── auth.ts                   # Authentication related
+│   ├── utils.ts                  # Utility functions
+│   └── validations.ts            # Validation schemas
+├── hooks/                        # Custom hooks
+├── types/                        # TypeScript type definitions
 ├── middleware.ts                 # Next.js middleware
 ├── tailwind.config.js
 ├── next.config.js
 └── package.json
 ```
 
-## コーディング規則
+## Coding Standards
 
 ### TypeScript
-- 厳密な型定義を使用（`strict: true`）
-- `any`型の使用を避ける
-- インターフェースとタイプエイリアスを適切に使い分け
-- 必要に応じてGenericsを活用
+- Use strict type definitions (`strict: true`)
+- Avoid using `any` type
+- Properly distinguish between interfaces and type aliases
+- Utilize Generics when necessary
 
-### コンポーネント設計
-- 関数コンポーネントを使用
-- Props型を明示的に定義
-- デフォルトpropsは初期値設定で対応
-- 可能な限り純粋コンポーネントを作成
+### Component Design
+- Use function components
+- Explicitly define Props types
+- Handle default props with initial value settings
+- Create pure components whenever possible
 
 ```typescript
 interface TodoItemProps {
@@ -67,15 +67,15 @@ interface TodoItemProps {
 }
 
 export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
-  // コンポーネント実装
+  // Component implementation
 }
 ```
 
 ### Tailwind CSS
-- カスタムクラスよりもユーティリティクラスを優先
-- レスポンシブデザインを意識（mobile-first）
-- ダークモード対応を考慮
-- コンポーネント内でのクラス組織化
+- Prioritize utility classes over custom classes
+- Keep responsive design in mind (mobile-first)
+- Consider dark mode support
+- Organize classes within components
 
 ```typescript
 const buttonStyles = {
@@ -87,11 +87,11 @@ const buttonStyles = {
 };
 ```
 
-### API通信
-- 環境変数でAPIエンドポイントを管理
-- エラーハンドリングを適切に実装
-- ローディング状態を管理
-- キャッシュ戦略を検討
+### API Communication
+- Manage API endpoints with environment variables
+- Implement proper error handling
+- Manage loading states
+- Consider caching strategies
 
 ```typescript
 // lib/api.ts
@@ -118,9 +118,9 @@ export async function fetchTodos(): Promise<Todo[]> {
 }
 ```
 
-## データ型定義
+## Data Type Definitions
 
-### Todo関連
+### Todo Related
 ```typescript
 // types/todo.ts
 export interface Todo {
@@ -147,7 +147,7 @@ export interface UpdateTodoRequest extends Partial<CreateTodoRequest> {
 }
 ```
 
-### User関連
+### User Related
 ```typescript
 // types/user.ts
 export interface User {
@@ -172,50 +172,50 @@ export interface AuthResponse {
 }
 ```
 
-## 環境変数
+## Environment Variables
 ```env
 # .env.local
 NEXT_PUBLIC_API_URL=http://localhost:8080/api
 NEXT_PUBLIC_APP_NAME=Todo App
 ```
 
-## パフォーマンス最適化
+## Performance Optimization
 - Dynamic imports for code splitting
 - Image optimization with next/image
 - Font optimization
-- Bundle analyzer for監視
+- Bundle analyzer for monitoring
 
-## アクセシビリティ
-- セマンティックHTML要素を使用
-- 適切なARIA属性を設定
-- キーボード操作をサポート
-- カラーコントラストに配慮
+## Accessibility
+- Use semantic HTML elements
+- Set appropriate ARIA attributes
+- Support keyboard navigation
+- Consider color contrast
 
-## エラーハンドリング
-- グローバルエラーバウンダリを設定
-- 404/500ページのカスタマイズ
-- 適切なエラーメッセージの表示
-- ログ記録の実装
+## Error Handling
+- Set up global error boundary
+- Customize 404/500 pages
+- Display appropriate error messages
+- Implement logging
 
-## セキュリティ
-- XSS対策（適切なエスケープ）
-- CSRF対策
-- 認証トークンの安全な管理
-- 環境変数での機密情報管理
+## Security
+- XSS protection (proper escaping)
+- CSRF protection
+- Secure authentication token management
+- Sensitive information management with environment variables
 
-## テスト戦略
-- ユニットテスト: コンポーネントとユーティリティ関数
-- 統合テスト: API通信とフォーム処理
-- E2Eテスト: 主要なユーザーフロー
+## Testing Strategy
+- Unit tests: Components and utility functions
+- Integration tests: API communication and form processing
+- E2E tests: Main user flows
 
-## 命名規則
-- ファイル: kebab-case
-- コンポーネント: PascalCase
-- 関数・変数: camelCase
-- 定数: UPPER_SNAKE_CASE
-- CSS クラス: Tailwindユーティリティ中心
+## Naming Conventions
+- Files: kebab-case
+- Components: PascalCase
+- Functions & Variables: camelCase
+- Constants: UPPER_SNAKE_CASE
+- CSS Classes: Tailwind utility-focused
 
-## Git関連
-- feature/* ブランチで開発
-- 適切なコミットメッセージ
-- 必要に応じてPRテンプレートを活用
+## Git Related
+- Develop in feature/* branches
+- Proper commit messages
+- Use PR templates when necessary

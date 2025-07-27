@@ -249,10 +249,10 @@ networks:
       config:
         - subnet: 172.20.0.0/16
 
-# 使用例:
-# 基本開発環境: docker-compose up -d
-# ツール付き: docker-compose --profile tools up -d
-# 監視付き: docker-compose --profile monitoring up -d
-# ストレージ付き: docker-compose --profile storage up -d
-# 本番環境風: docker-compose --profile production up -d
-# 全て: docker-compose --profile tools --profile monitoring --profile storage --profile production up -d
+# Usage examples:
+# Basic development environment: docker-compose up -d
+# With tools: docker-compose --profile tools up -d
+# With monitoring: docker-compose --profile monitoring up -d
+# With storage: docker-compose --profile storage up -d
+# Production-like: docker-compose --profile production up -d
+# All: docker-compose --profile tools --profile monitoring --profile storage --profile production up -d

@@ -2,7 +2,7 @@ import { apiClient } from './api';
 import { Todo, CreateTodoRequest, UpdateTodoRequest, TodoFilters, PaginatedResponse } from '../types/todo';
 
 export class TodoAPI {
-  // Todo一覧を取得
+  // Get Todo list
   static async getTodos(
     page: number = 1,
     limit: number = 10,
@@ -26,27 +26,27 @@ export class TodoAPI {
     return apiClient.get<PaginatedResponse<Todo>>(`/todos?${params.toString()}`);
   }
 
-  // Todo詳細を取得
+  // Get Todo details
   static async getTodo(id: string): Promise<Todo> {
     return apiClient.get<Todo>(`/todos/${id}`);
   }
 
-  // Todo作成
+  // Create Todo
   static async createTodo(data: CreateTodoRequest): Promise<Todo> {
     return apiClient.post<Todo>('/todos', data);
   }
 
-  // Todo更新
+  // Update Todo
   static async updateTodo(id: string, data: UpdateTodoRequest): Promise<Todo> {
     return apiClient.put<Todo>(`/todos/${id}`, data);
   }
 
-  // Todo削除
+  // Delete Todo
   static async deleteTodo(id: string): Promise<void> {
     return apiClient.delete<void>(`/todos/${id}`);
   }
 
-  // Todo完了状態の切り替え
+  // Toggle Todo completion status
   static async toggleTodo(id: string, completed: boolean): Promise<Todo> {
     return apiClient.patch<Todo>(`/todos/${id}`, { completed });
   }

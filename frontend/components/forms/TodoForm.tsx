@@ -15,9 +15,9 @@ interface TodoFormProps {
 }
 
 const priorityOptions = [
-  { value: 'low', label: '低' },
-  { value: 'medium', label: '中' },
-  { value: 'high', label: '高' },
+  { value: 'low', label: 'Low' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'high', label: 'High' },
 ];
 
 export function TodoForm({ onSubmit, isLoading, defaultValues }: TodoFormProps) {
@@ -46,15 +46,15 @@ export function TodoForm({ onSubmit, isLoading, defaultValues }: TodoFormProps) 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
       <Input
-        label="タイトル"
-        placeholder="Todoのタイトルを入力してください"
+        label="Title"
+        placeholder="Enter Todo title"
         error={errors.title?.message}
         {...register('title')}
       />
 
       <Textarea
-        label="説明（任意）"
-        placeholder="詳細な説明を入力してください"
+        label="Description (optional)"
+        placeholder="Enter detailed description"
         error={errors.description?.message}
         {...register('description')}
         rows={3}
@@ -62,7 +62,7 @@ export function TodoForm({ onSubmit, isLoading, defaultValues }: TodoFormProps) 
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Select
-          label="優先度"
+          label="Priority"
           options={priorityOptions}
           error={errors.priority?.message}
           {...register('priority')}
@@ -70,7 +70,7 @@ export function TodoForm({ onSubmit, isLoading, defaultValues }: TodoFormProps) 
 
         <Input
           type="date"
-          label="期限（任意）"
+          label="Due Date (optional)"
           error={errors.dueDate?.message}
           {...register('dueDate')}
         />
@@ -83,14 +83,14 @@ export function TodoForm({ onSubmit, isLoading, defaultValues }: TodoFormProps) 
           onClick={() => reset()}
           disabled={isLoading}
         >
-          リセット
+          Reset
         </Button>
         <Button
           type="submit"
           isLoading={isLoading}
           disabled={isLoading}
         >
-          Todoを作成
+          Create Todo
         </Button>
       </div>
     </form>

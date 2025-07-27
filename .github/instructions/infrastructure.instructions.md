@@ -1,9 +1,9 @@
 # Infrastructure Instructions - AWS with Terraform
 
-## プロジェクト概要
-Web TodoアプリのインフラをAWSでTerraformを使用してIaC（Infrastructure as Code）として管理します。
+## Project Overview
+Manage the infrastructure for a Web Todo application on AWS using Terraform as IaC (Infrastructure as Code).
 
-## 技術スタック
+## Technology Stack
 - **Cloud Provider**: AWS
 - **IaC Tool**: Terraform 1.5+
 - **Container Orchestration**: AWS ECS with Fargate
@@ -16,7 +16,7 @@ Web TodoアプリのインフラをAWSでTerraformを使用してIaC（Infrastru
 - **CI/CD**: GitHub Actions + AWS ECR
 - **Security**: AWS WAF, Security Groups, IAM
 
-## インフラ構成図
+## Infrastructure Architecture
 ```
 Internet
     ↓
@@ -31,10 +31,10 @@ ECS Fargate (Frontend & Backend)
 RDS PostgreSQL (Multi-AZ)
 ```
 
-## プロジェクト構造
+## Project Structure
 ```
 infrastructure/
-├── environments/                 # 環境別設定
+├── environments/                 # Environment-specific configurations
 │   ├── dev/
 │   │   ├── main.tf
 │   │   ├── variables.tf
@@ -50,7 +50,7 @@ infrastructure/
 │       ├── variables.tf
 │       ├── outputs.tf
 │       └── terraform.tfvars.example
-├── modules/                      # 再利用可能なモジュール
+├── modules/                      # Reusable modules
 │   ├── networking/               # VPC, Subnets, IGW, NAT
 │   │   ├── main.tf
 │   │   ├── variables.tf
@@ -79,7 +79,7 @@ infrastructure/
 │       ├── main.tf
 │       ├── variables.tf
 │       └── outputs.tf
-├── scripts/                      # デプロイ・管理スクリプト
+├── scripts/                      # Deployment & management scripts
 │   ├── deploy.sh
 │   ├── destroy.sh
 │   └── init.sh
@@ -87,9 +87,9 @@ infrastructure/
 └── README.md
 ```
 
-## Terraform設定
+## Terraform Configuration
 
-### Provider設定
+### Provider Configuration
 ```hcl
 # environments/dev/main.tf
 terraform {
@@ -125,7 +125,7 @@ provider "aws" {
 }
 ```
 
-### 変数定義
+### Variable Definitions
 ```hcl
 # environments/dev/variables.tf
 variable "aws_region" {
@@ -164,9 +164,9 @@ variable "app_count" {
 }
 ```
 
-## ネットワーキングモジュール
+## Networking Module
 
-### VPC設定
+### VPC Configuration
 ```hcl
 # modules/networking/main.tf
 resource "aws_vpc" "main" {
@@ -285,7 +285,7 @@ resource "aws_route_table_association" "private" {
 }
 ```
 
-## データベースモジュール
+## Database Module
 
 ### RDS PostgreSQL
 ```hcl
@@ -389,7 +389,7 @@ resource "aws_iam_role_policy_attachment" "rds_enhanced_monitoring" {
 }
 ```
 
-## ECSモジュール
+## ECS Module
 
 ### ECS Cluster & Service
 ```hcl
@@ -532,7 +532,7 @@ resource "aws_ecs_service" "backend" {
 }
 ```
 
-## セキュリティ設定
+## Security Configuration
 
 ### Security Groups
 ```hcl
@@ -610,9 +610,9 @@ resource "aws_security_group" "database" {
 }
 ```
 
-## 環境変数ファイル
+## Environment Variable Files
 
-### Development環境
+### Development Environment
 ```hcl
 # environments/dev/terraform.tfvars
 aws_region   = "ap-northeast-1"
@@ -638,7 +638,7 @@ backend_image = "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/todoapp-backe
 frontend_image = "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/todoapp-frontend"
 ```
 
-### Production環境
+### Production Environment
 ```hcl
 # environments/prod/terraform.tfvars.example
 aws_region   = "ap-northeast-1"
@@ -664,9 +664,9 @@ backend_image = "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/todoapp-backe
 frontend_image = "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/todoapp-frontend"
 ```
 
-## デプロイスクリプト
+## Deployment Scripts
 
-### 初期化スクリプト
+### Initialization Script
 ```bash
 #!/bin/bash
 # scripts/init.sh
@@ -693,7 +693,7 @@ terraform validate
 echo "Terraform initialized successfully for $ENVIRONMENT"
 ```
 
-### デプロイスクリプト
+### Deployment Script
 ```bash
 #!/bin/bash
 # scripts/deploy.sh
@@ -725,7 +725,7 @@ fi
 echo "Deployment completed for $ENVIRONMENT"
 ```
 
-## モニタリング設定
+## Monitoring Configuration
 
 ### CloudWatch Alarms
 ```hcl
@@ -767,27 +767,27 @@ resource "aws_cloudwatch_metric_alarm" "high_memory" {
 }
 ```
 
-## コスト最適化
-- 本番環境では Reserved Instances の活用
-- 開発環境では夜間・週末のインスタンス停止
-- S3のライフサイクルポリシー設定
-- CloudWatch Logs の適切な保持期間設定
+## Cost Optimization
+- Use Reserved Instances in production environment
+- Stop instances during nights and weekends in development environment
+- S3 lifecycle policy configuration
+- Proper CloudWatch Logs retention period configuration
 
-## セキュリティベストプラクティス
-- IAM ロールの最小権限原則
-- Security Groups の適切な設定
-- AWS WAF でのWebアプリケーション保護
-- VPC フローログの有効化
-- AWS Config でのコンプライアンス監視
+## Security Best Practices
+- Principle of least privilege for IAM roles
+- Proper Security Groups configuration
+- Web application protection with AWS WAF
+- Enable VPC Flow Logs
+- Compliance monitoring with AWS Config
 
-## 命名規則
-- リソース名: `{project_name}-{environment}-{resource_type}`
-- タグ: Environment, Project, ManagedBy は必須
-- 変数名: snake_case
-- モジュール名: kebab-case
+## Naming Conventions
+- Resource names: `{project_name}-{environment}-{resource_type}`
+- Tags: Environment, Project, ManagedBy are required
+- Variable names: snake_case
+- Module names: kebab-case
 
-## Git関連
-- infrastructure/** ブランチで開発
-- terraform plan の結果をPRコメントに追加
-- .terraform/ ディレクトリは .gitignore に追加
-- terraform.tfstate は Git 管理対象外（S3 backend使用）
+## Git Guidelines
+- Develop in infrastructure/** branches
+- Add terraform plan results to PR comments
+- Add .terraform/ directory to .gitignore
+- terraform.tfstate is not under Git management (use S3 backend)

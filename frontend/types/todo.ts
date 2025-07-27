@@ -1,4 +1,4 @@
-// Todo関連の型定義
+// Todo-related type definitions
 export interface Todo {
   id: string;
   title: string;
@@ -22,7 +22,7 @@ export interface UpdateTodoRequest extends Partial<CreateTodoRequest> {
   completed?: boolean;
 }
 
-// ページネーション関連
+// Pagination-related
 export interface PaginatedResponse<T> {
   data: T[];
   total: number;
@@ -31,7 +31,7 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
-// フィルター関連
+// Filter-related
 export interface TodoFilters {
   completed?: boolean;
   priority?: Todo['priority'];

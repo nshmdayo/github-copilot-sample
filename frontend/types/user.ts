@@ -1,4 +1,4 @@
-// User関連の型定義
+// User-related type definitions
 export interface User {
   id: string;
   email: string;
@@ -20,7 +20,7 @@ export interface AuthResponse {
   token: string;
 }
 
-// 認証状態
+// Authentication state
 export interface AuthState {
   user: User | null;
   token: string | null;

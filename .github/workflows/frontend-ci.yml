@@ -91,9 +91,9 @@ jobs:
 
       - name: Start backend service
         run: |
-          # Docker Composeでバックエンドサービスを起動
+          # Start backend services with Docker Compose
           docker-compose up -d postgres backend
-          # サービスが起動するまで待機
+          # Wait for services to start
           sleep 30
 
       - name: Run E2E tests

@@ -26,7 +26,7 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete }: TodoItemProps) {
   };
 
   const handleDelete = async () => {
-    if (window.confirm('このTodoを削除してもよろしいですか？')) {
+    if (window.confirm('Are you sure you want to delete this Todo?')) {
       setIsDeleting(true);
       try {
         await onDelete(todo.id);
@@ -79,7 +79,7 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete }: TodoItemProps) {
                   todo.priority
                 )}`}
               >
-                優先度: {getPriorityLabel(todo.priority)}
+                Priority: {getPriorityLabel(todo.priority)}
               </span>
               
               {todo.dueDate && (
@@ -90,12 +90,12 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete }: TodoItemProps) {
                       : 'bg-blue-100 text-blue-800'
                   }`}
                 >
-                  期限: {formatDate(todo.dueDate)}
+                  Due: {formatDate(todo.dueDate)}
                 </span>
               )}
               
               <span className="text-xs text-gray-500">
-                作成日: {formatDate(todo.createdAt)}
+                Created: {formatDate(todo.createdAt)}
               </span>
             </div>
           </div>
@@ -108,7 +108,7 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete }: TodoItemProps) {
             onClick={() => onEdit(todo)}
             disabled={isToggling || isDeleting}
           >
-            編集
+            Edit
           </Button>
           <Button
             variant="destructive"
@@ -117,7 +117,7 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete }: TodoItemProps) {
             isLoading={isDeleting}
             disabled={isToggling || isDeleting}
           >
-            削除
+            Delete
           </Button>
         </div>
       </div>

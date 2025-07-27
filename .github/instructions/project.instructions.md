@@ -1,9 +1,9 @@
 # Project Instructions - Web Todo Application
 
-## プロジェクト概要
-フロントエンド（Next.js + Tailwind CSS）、バックエンド（Go言語）、インフラ（AWS + Terraform）で構成されるWeb Todoアプリケーションの開発・運用指示書です。
+## Project Overview
+Development and operations instructions for a Web Todo application consisting of Frontend (Next.js + Tailwind CSS), Backend (Go language), and Infrastructure (AWS + Terraform).
 
-## アーキテクチャ概要
+## Architecture Overview
 ```
 [Frontend: Next.js + Tailwind] 
            ↓ (HTTPS/API)
@@ -14,11 +14,11 @@
 [Terraform + GitHub Actions]
 ```
 
-## プロジェクト構造
+## Project Structure
 ```
 github-copilot-sample/
 ├── .github/
-│   ├── instructions/             # 各コンポーネントの開発指示書
+│   ├── instructions/             # Development instructions for each component
 │   │   ├── frontend.instructions.md
 │   │   ├── backend.instructions.md
 │   │   ├── infrastructure.instructions.md
@@ -50,93 +50,93 @@ github-copilot-sample/
 │   ├── environments/
 │   ├── modules/
 │   └── scripts/
-├── docs/                        # プロジェクトドキュメント
-│   ├── api/                     # API仕様書
-│   ├── deployment/              # デプロイ手順
-│   └── architecture/            # アーキテクチャ図
-├── scripts/                     # 各種スクリプト
-│   ├── setup.sh                 # 初期セットアップ
-│   ├── dev-start.sh            # 開発環境起動
-│   └── build-all.sh            # 全体ビルド
-├── docker-compose.yml           # ローカル開発環境
+├── docs/                        # Project documentation
+│   ├── api/                     # API specifications
+│   ├── deployment/              # Deployment procedures
+│   └── architecture/            # Architecture diagrams
+├── scripts/                     # Various scripts
+│   ├── setup.sh                 # Initial setup
+│   ├── dev-start.sh            # Development environment startup
+│   └── build-all.sh            # Full build
+├── docker-compose.yml           # Local development environment
 ├── README.md
 └── general.instructure.md
 ```
 
-## 開発フロー
+## Development Flow
 
-### 1. 環境セットアップ
+### 1. Environment Setup
 ```bash
-# リポジトリクローン
+# Clone repository
 git clone https://github.com/nshmdayo/github-copilot-sample.git
 cd github-copilot-sample
 
-# 初期セットアップ実行
+# Run initial setup
 ./scripts/setup.sh
 ```
 
-### 2. ローカル開発環境起動
+### 2. Start Local Development Environment
 ```bash
-# Docker Composeでローカル環境起動
+# Start local environment with Docker Compose
 docker-compose up -d
 
-# または個別起動
+# Or individual startup
 ./scripts/dev-start.sh
 ```
 
-### 3. 開発ワークフロー
-1. **機能ブランチ作成**
+### 3. Development Workflow
+1. **Create Feature Branch**
    ```bash
    git checkout -b feature/todo-crud-api
    ```
 
-2. **開発実施**
-   - バックエンドAPI実装
-   - フロントエンド画面実装
-   - インフラ設定更新
+2. **Development Implementation**
+   - Backend API implementation
+   - Frontend UI implementation
+   - Infrastructure configuration update
 
-3. **テスト実行**
+3. **Run Tests**
    ```bash
-   # バックエンドテスト
+   # Backend tests
    cd backend && go test ./...
    
-   # フロントエンドテスト
+   # Frontend tests
    cd frontend && npm test
    ```
 
-4. **プルリクエスト作成**
-   - CI/CDパイプラインが自動実行
-   - コードレビュー実施
+4. **Create Pull Request**
+   - CI/CD pipeline runs automatically
+   - Conduct code review
 
-5. **マージ & デプロイ**
-   - main ブランチへマージ
-   - 自動デプロイ実行
+5. **Merge & Deploy**
+   - Merge to main branch
+   - Execute automatic deployment
 
-## API設計
+## API Design
 
-### エンドポイント一覧
+### Endpoint List
 ```
-# 認証
-POST   /api/auth/register      # ユーザー登録
-POST   /api/auth/login         # ログイン
-POST   /api/auth/refresh       # トークンリフレッシュ
+# Authentication
+POST   /api/auth/register      # User registration
+POST   /api/auth/login         # Login
+POST   /api/auth/refresh       # Token refresh
 
 # Todo
-GET    /api/todos              # Todo一覧取得
-POST   /api/todos              # Todo作成
-GET    /api/todos/:id          # Todo詳細取得
-PUT    /api/todos/:id          # Todo更新
-DELETE /api/todos/:id          # Todo削除
+GET    /api/todos              # Get Todo list
+POST   /api/todos              # Create Todo
+GET    /api/todos/:id          # Get Todo details
+PUT    /api/todos/:id          # Update Todo
+DELETE /api/todos/:id          # Delete Todo
 
-# ユーザー
-GET    /api/users/me           # ユーザー情報取得
-PUT    /api/users/me           # ユーザー情報更新
+# User
+GET    /api/users/me           # Get user information
+PUT    /api/users/me           # Update user information
 
-# ヘルスチェック
-GET    /health                 # アプリケーション状態確認
+# Health Check
+GET    /health                 # Check application status
 ```
 
-### データモデル
+### Data Models
 ```typescript
 interface User {
   id: string;
@@ -158,15 +158,15 @@ interface Todo {
 }
 ```
 
-## 環境設定
+## Environment Configuration
 
-### 開発環境
+### Development Environment
 - **Frontend**: http://localhost:3000
 - **Backend**: http://localhost:8080
 - **Database**: PostgreSQL (localhost:5432)
 - **Documentation**: http://localhost:8080/swagger/index.html
 
-### 環境変数
+### Environment Variables
 ```env
 # Frontend (.env.local)
 NEXT_PUBLIC_API_URL=http://localhost:8080/api
@@ -187,9 +187,9 @@ AWS_REGION=ap-northeast-1
 TF_STATE_BUCKET=todoapp-terraform-state
 ```
 
-## CI/CD パイプライン
+## CI/CD Pipeline
 
-### フロントエンド CI
+### Frontend CI
 ```yaml
 name: Frontend CI
 on:
@@ -227,7 +227,7 @@ jobs:
           docker build -t todoapp-frontend:${{ github.sha }} .
 ```
 
-### バックエンド CI
+### Backend CI
 ```yaml
 name: Backend CI
 on:
@@ -279,105 +279,105 @@ jobs:
           docker build -t todoapp-backend:${{ github.sha }} .
 ```
 
-## セキュリティ要件
+## Security Requirements
 
-### 認証・認可
-- JWT トークンによる認証
-- トークンの適切な有効期限設定
-- リフレッシュトークンの実装
+### Authentication & Authorization
+- JWT token-based authentication
+- Appropriate token expiration settings
+- Refresh token implementation
 
-### データ保護
-- HTTPS通信の強制
-- パスワードのハッシュ化（bcrypt）
-- 機密情報の環境変数管理
+### Data Protection
+- Enforce HTTPS communication
+- Password hashing (bcrypt)
+- Environment variable management for sensitive information
 
-### API セキュリティ
-- CORS設定
+### API Security
+- CORS configuration
 - Rate Limiting
 - Input Validation
-- SQL Injection 対策
+- SQL Injection prevention
 
-### インフラセキュリティ
-- AWS WAF による Web アプリケーション保護
-- Security Groups による適切なネットワーク制御
-- IAM ロールによる最小権限アクセス
+### Infrastructure Security
+- Web application protection with AWS WAF
+- Proper network control with Security Groups
+- Least privilege access with IAM roles
 
-## パフォーマンス要件
+## Performance Requirements
 
-### フロントエンド
+### Frontend
 - First Contentful Paint < 1.5s
 - Largest Contentful Paint < 2.5s
 - Cumulative Layout Shift < 0.1
 - Time to Interactive < 3.0s
 
-### バックエンド
-- API レスポンス時間 < 200ms (95 percentile)
-- データベースクエリ最適化
-- 適切なインデックス設定
+### Backend
+- API response time < 200ms (95 percentile)
+- Database query optimization
+- Proper index configuration
 
-### インフラ
-- Auto Scaling による負荷対応
-- CloudFront による静的コンテンツ配信
-- RDS Multi-AZ による高可用性
+### Infrastructure
+- Load handling with Auto Scaling
+- Static content delivery with CloudFront
+- High availability with RDS Multi-AZ
 
-## モニタリング & ログ
+## Monitoring & Logging
 
-### アプリケーション監視
-- CloudWatch メトリクス
+### Application Monitoring
+- CloudWatch metrics
 - ECS Container Insights
 - RDS Performance Insights
 
-### ログ管理
-- 構造化ログ（JSON形式）
-- CloudWatch Logs による集約
-- 適切なログレベル設定
+### Log Management
+- Structured logging (JSON format)
+- Aggregation with CloudWatch Logs
+- Proper log level configuration
 
-### アラート設定
-- CPU/Memory使用率
-- エラー率
-- レスポンス時間
-- データベース接続数
+### Alert Configuration
+- CPU/Memory usage
+- Error rate
+- Response time
+- Database connection count
 
-## テスト戦略
+## Testing Strategy
 
-### フロントエンド
-- **ユニットテスト**: React Testing Library + Jest
-- **統合テスト**: API通信のモック
-- **E2Eテスト**: Playwright
+### Frontend
+- **Unit Tests**: React Testing Library + Jest
+- **Integration Tests**: Mock API communication
+- **E2E Tests**: Playwright
 
-### バックエンド
-- **ユニットテスト**: Go標準テスト + testify
-- **統合テスト**: データベース操作
-- **API テスト**: HTTPリクエスト/レスポンス
+### Backend
+- **Unit Tests**: Go standard testing + testify
+- **Integration Tests**: Database operations
+- **API Tests**: HTTP request/response
 
-### インフラ
+### Infrastructure
 - **Infrastructure Tests**: Terratest
 - **Security Tests**: tfsec, checkov
 
-## ドキュメント管理
+## Documentation Management
 
-### API ドキュメント
-- Swagger/OpenAPI仕様書
-- 自動生成 + 手動メンテナンス
-- 各環境でのアクセス可能
+### API Documentation
+- Swagger/OpenAPI specification
+- Auto-generated + manual maintenance
+- Accessible in each environment
 
-### アーキテクチャドキュメント
-- システム構成図
-- データフロー図
-- セキュリティアーキテクチャ
+### Architecture Documentation
+- System architecture diagrams
+- Data flow diagrams
+- Security architecture
 
-## ブランチ戦略
+## Branching Strategy
 
 ### Git Flow
 ```
-main                 # 本番環境
-├── develop          # 開発統合ブランチ
-├── feature/*        # 機能開発
-├── release/*        # リリース準備
-└── hotfix/*         # 緊急修正
+main                 # Production environment
+├── develop          # Development integration branch
+├── feature/*        # Feature development
+├── release/*        # Release preparation
+└── hotfix/*         # Emergency fixes
 ```
 
-### コミットメッセージ規則
+### Commit Message Conventions
 ```
 type(scope): description
 
@@ -387,56 +387,56 @@ docs(readme): update setup instructions
 refactor(infrastructure): optimize ECS task definition
 ```
 
-## 品質管理
+## Quality Management
 
-### コードレビュー
-- 最低1人のレビュアー必須
-- 自動テスト通過が必須
-- セキュリティチェック実施
+### Code Review
+- Minimum 1 reviewer required
+- Automated tests must pass
+- Security checks performed
 
-### 品質ゲート
-- テストカバレッジ 80% 以上
-- Linter エラー 0 件
-- 脆弱性スキャン通過
+### Quality Gates
+- Test coverage 80% or higher
+- 0 linter errors
+- Vulnerability scan passed
 
-## デプロイメント戦略
+## Deployment Strategy
 
-### 環境構成
-- **Development**: 機能開発・テスト
-- **Staging**: 本番環境と同等構成でのテスト
-- **Production**: 本番環境
+### Environment Configuration
+- **Development**: Feature development and testing
+- **Staging**: Production-equivalent configuration testing
+- **Production**: Production environment
 
-### デプロイ方式
+### Deployment Methods
 - Blue-Green Deployment
-- Rolling Update (開発環境)
-- Canary Release (本番環境)
+- Rolling Update (development environment)
+- Canary Release (production environment)
 
-## 運用・保守
+## Operations & Maintenance
 
-### 定期メンテナンス
-- 依存関係の更新
-- セキュリティパッチ適用
-- パフォーマンスチューニング
+### Regular Maintenance
+- Dependency updates
+- Security patch application
+- Performance tuning
 
-### バックアップ戦略
-- RDS 自動バックアップ
-- データの定期的なエクスポート
-- 災害復旧計画
+### Backup Strategy
+- RDS automatic backup
+- Regular data export
+- Disaster recovery plan
 
-## トラブルシューティング
+## Troubleshooting
 
-### 一般的な問題と解決方法
-1. **アプリケーション起動失敗**
-   - ログ確認: CloudWatch Logs
-   - 環境変数設定確認
-   - データベース接続確認
+### Common Issues and Solutions
+1. **Application startup failure**
+   - Check logs: CloudWatch Logs
+   - Verify environment variable configuration
+   - Confirm database connection
 
-2. **API レスポンス遅延**
-   - CloudWatch メトリクス確認
-   - データベースクエリ最適化
-   - ECS タスク数増加
+2. **API response delays**
+   - Check CloudWatch metrics
+   - Optimize database queries
+   - Increase ECS task count
 
-3. **認証エラー**
-   - JWT トークン有効性確認
-   - 環境変数 JWT_SECRET 確認
-   - CORS設定確認
+3. **Authentication errors**
+   - Verify JWT token validity
+   - Check JWT_SECRET environment variable
+   - Verify CORS configuration

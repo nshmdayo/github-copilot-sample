@@ -1,9 +1,9 @@
 # Backend Development Instructions - Go Language
 
-## プロジェクト概要
-Web TodoアプリのバックエンドAPIをGo言語で構築します。RESTful APIを提供し、認証、Todo CRUD操作を実装します。
+## Project Overview
+Build the backend API for a Web Todo application using Go language. Provide RESTful API and implement authentication and Todo CRUD operations.
 
-## 技術スタック
+## Technology Stack
 - **Language**: Go 1.21+
 - **Web Framework**: Gin (github.com/gin-gonic/gin)
 - **Database**: PostgreSQL
@@ -16,65 +16,65 @@ Web TodoアプリのバックエンドAPIをGo言語で構築します。RESTful
 - **Testing**: testify (github.com/stretchr/testify)
 - **Documentation**: Swagger (github.com/swaggo/gin-swagger)
 
-## プロジェクト構造
+## Project Structure
 ```
 backend/
 ├── cmd/
 │   └── server/
-│       └── main.go               # アプリケーションエントリーポイント
-├── internal/                     # プライベートアプリケーションコード
-│   ├── config/                   # 設定管理
+│       └── main.go               # Application entry point
+├── internal/                     # Private application code
+│   ├── config/                   # Configuration management
 │   │   └── config.go
-│   ├── handler/                  # HTTPハンドラー
+│   ├── handler/                  # HTTP handlers
 │   │   ├── auth.go
 │   │   ├── todo.go
 │   │   └── user.go
-│   ├── middleware/               # HTTPミドルウェア
+│   ├── middleware/               # HTTP middleware
 │   │   ├── auth.go
 │   │   ├── cors.go
 │   │   └── logger.go
-│   ├── model/                    # データモデル
+│   ├── model/                    # Data models
 │   │   ├── todo.go
 │   │   └── user.go
-│   ├── repository/               # データアクセス層
+│   ├── repository/               # Data access layer
 │   │   ├── todo.go
 │   │   └── user.go
-│   ├── service/                  # ビジネスロジック層
+│   ├── service/                  # Business logic layer
 │   │   ├── auth.go
 │   │   ├── todo.go
 │   │   └── user.go
-│   └── utils/                    # ユーティリティ関数
+│   └── utils/                    # Utility functions
 │       ├── hash.go
 │       ├── jwt.go
 │       └── validator.go
-├── pkg/                          # 外部パッケージ
+├── pkg/                          # External packages
 │   └── database/
 │       └── postgres.go
-├── migrations/                   # データベースマイグレーション
+├── migrations/                   # Database migrations
 │   ├── 001_create_users_table.up.sql
 │   ├── 001_create_users_table.down.sql
 │   ├── 002_create_todos_table.up.sql
 │   └── 002_create_todos_table.down.sql
-├── docs/                         # Swagger生成ドキュメント
+├── docs/                         # Swagger generated documentation
 ├── docker/
 │   └── Dockerfile
-├── scripts/                      # ビルド・デプロイスクリプト
+├── scripts/                      # Build & deployment scripts
 ├── go.mod
 ├── go.sum
 ├── .env.example
 └── README.md
 ```
 
-## アーキテクチャパターン
-Clean Architectureを採用し、依存関係を明確に分離します。
+## Architecture Pattern
+Adopts Clean Architecture with clear separation of dependencies.
 
-### レイヤー構成
-1. **Handler層**: HTTPリクエスト/レスポンス処理
-2. **Service層**: ビジネスロジック
-3. **Repository層**: データアクセス
-4. **Model層**: ドメインモデル
+### Layer Composition
+1. **Handler Layer**: HTTP request/response processing
+2. **Service Layer**: Business logic
+3. **Repository Layer**: Data access
+4. **Model Layer**: Domain models
 
-### 依存関係注入
+### Dependency Injection
 ```go
 type Dependencies struct {
     UserService auth.UserService
@@ -104,7 +104,7 @@ func NewDependencies(cfg *config.Config) (*Dependencies, error) {
 }
 ```
 
-## データモデル
+## Data Models
 
 ### User Model
 ```go
@@ -192,13 +192,16 @@ type UpdateTodoRequest struct {
 }
 ```
 
-## API設計
+## API Design
 
-### 認証エンドポイント
+### Authentication Endpoints
 ```go
-// POST /api/auth/register - ユーザー登録
-// POST /api/auth/login    - ログイン
-// POST /api/auth/refresh  - トークンリフレッシュ
+
+### Authentication Endpoints
+
+// POST /api/auth/register - User registration
+// POST /api/auth/login    - Login
+// POST /api/auth/refresh  - Token refresh
 
 // @Summary Register user
 // @Tags auth
@@ -209,17 +212,17 @@ type UpdateTodoRequest struct {
 // @Failure 400 {object} ErrorResponse
 // @Router /auth/register [post]
 func (h *AuthHandler) Register(c *gin.Context) {
-    // 実装
+    // Implementation
 }
 ```
 
-### Todo エンドポイント
+### Todo Endpoints
 ```go
-// GET    /api/todos      - Todo一覧取得
-// POST   /api/todos      - Todo作成
-// GET    /api/todos/:id  - Todo詳細取得
-// PUT    /api/todos/:id  - Todo更新
-// DELETE /api/todos/:id  - Todo削除
+// GET    /api/todos      - Get Todo list
+// POST   /api/todos      - Create Todo
+// GET    /api/todos/:id  - Get Todo details
+// PUT    /api/todos/:id  - Update Todo
+// DELETE /api/todos/:id  - Delete Todo
 
 // @Summary Get todos
 // @Tags todos
@@ -232,13 +235,13 @@ func (h *AuthHandler) Register(c *gin.Context) {
 // @Security BearerAuth
 // @Router /todos [get]
 func (h *TodoHandler) GetTodos(c *gin.Context) {
-    // 実装
+    // Implementation
 }
 ```
 
-## エラーハンドリング
+## Error Handling
 
-### 標準エラーレスポンス
+### Standard Error Response
 ```go
 type ErrorResponse struct {
     Error   string                 `json:"error"`
@@ -257,7 +260,7 @@ func HandleError(c *gin.Context, err error, statusCode int) {
     switch e := err.(type) {
     case validator.ValidationErrors:
         response.Error = "validation_error"
-        response.Message = "入力データに誤りがあります"
+        response.Message = "Input data is invalid"
         response.Details = formatValidationErrors(e)
         statusCode = http.StatusBadRequest
     default:
@@ -269,9 +272,9 @@ func HandleError(c *gin.Context, err error, statusCode int) {
 }
 ```
 
-## セキュリティ
+## Security
 
-### JWT認証
+### JWT Authentication
 ```go
 // internal/utils/jwt.go
 func GenerateToken(userID string) (string, error) {
@@ -295,7 +298,7 @@ func ValidateToken(tokenString string) (*jwt.Token, error) {
 }
 ```
 
-### ミドルウェア
+### Middleware
 ```go
 // internal/middleware/auth.go
 func AuthMiddleware() gin.HandlerFunc {
@@ -328,7 +331,7 @@ func AuthMiddleware() gin.HandlerFunc {
 }
 ```
 
-## 設定管理
+## Configuration Management
 ```go
 // internal/config/config.go
 type Config struct {
@@ -357,9 +360,9 @@ type JWTConfig struct {
 }
 ```
 
-## テスト戦略
+## Testing Strategy
 
-### ユニットテスト
+### Unit Testing
 ```go
 // internal/service/todo_test.go
 func TestTodoService_CreateTodo(t *testing.T) {
@@ -388,7 +391,7 @@ func TestTodoService_CreateTodo(t *testing.T) {
 }
 ```
 
-## 環境変数
+## Environment Variables
 ```env
 # .env
 # Server
@@ -411,14 +414,14 @@ JWT_EXPIRATION=24h
 GO_ENV=development
 ```
 
-## ログ設定
+## Logging Configuration
 ```go
 // Structured logging with logrus
 log := logrus.New()
 log.SetFormatter(&logrus.JSONFormatter{})
 log.SetLevel(logrus.InfoLevel)
 
-// ミドルウェアでのリクエストログ
+// Request logging middleware
 func LoggerMiddleware() gin.HandlerFunc {
     return func(c *gin.Context) {
         start := time.Now()
@@ -436,20 +439,20 @@ func LoggerMiddleware() gin.HandlerFunc {
 }
 ```
 
-## パフォーマンス最適化
-- データベースインデックスの適切な設計
-- N+1問題の回避（Preloadの活用）
-- ページネーション実装
-- レスポンスキャッシュ（Redis）
+## Performance Optimization
+- Proper database index design
+- Avoiding N+1 problems (using Preload)
+- Pagination implementation
+- Response caching (Redis)
 
-## 命名規則
-- パッケージ: lowercase
-- 関数・メソッド: CamelCase（公開）、camelCase（非公開）
-- 構造体: PascalCase（公開）、camelCase（非公開）
-- 定数: UPPER_SNAKE_CASE または PascalCase
-- ファイル: snake_case
+## Naming Conventions
+- Package: lowercase
+- Functions/Methods: CamelCase (public), camelCase (private)
+- Structs: PascalCase (public), camelCase (private)
+- Constants: UPPER_SNAKE_CASE or PascalCase
+- Files: snake_case
 
-## Git関連
-- feature/* ブランチで開発
-- go fmt, go vet, golangci-lint を実行
-- テストカバレッジ80%以上を目標
+## Git Guidelines
+- Develop in feature/* branches
+- Run go fmt, go vet, golangci-lint
+- Aim for 80%+ test coverage

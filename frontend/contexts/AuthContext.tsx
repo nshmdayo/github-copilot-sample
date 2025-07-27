@@ -81,7 +81,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // 初期化時に保存されたトークンを確認
+  // Check saved token on initialization
   useEffect(() => {
     const initializeAuth = async () => {
       const token = localStorage.getItem('auth_token');
@@ -94,7 +94,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             payload: { user, token },
           });
         } catch {
-          // トークンが無効な場合
+          // If token is invalid
           localStorage.removeItem('auth_token');
           dispatch({ type: 'LOGIN_FAILURE' });
         }

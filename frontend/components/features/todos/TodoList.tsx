@@ -18,16 +18,16 @@ interface TodoListProps {
 }
 
 const priorityFilterOptions = [
-  { value: '', label: 'すべての優先度' },
-  { value: 'low', label: '低' },
-  { value: 'medium', label: '中' },
-  { value: 'high', label: '高' },
+  { value: '', label: 'All Priorities' },
+  { value: 'low', label: 'Low' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'high', label: 'High' },
 ];
 
 const completedFilterOptions = [
-  { value: '', label: 'すべて' },
-  { value: 'false', label: '未完了' },
-  { value: 'true', label: '完了済み' },
+  { value: '', label: 'All' },
+  { value: 'false', label: 'Incomplete' },
+  { value: 'true', label: 'Completed' },
 ];
 
 export function TodoList({
@@ -78,12 +78,12 @@ export function TodoList({
 
   return (
     <div className="space-y-6">
-      {/* フィルター */}
+      {/* Filter */}
       <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">フィルター</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Filter</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Input
-            placeholder="検索..."
+            placeholder="Search..."
             value={searchTerm}
             onChange={handleSearchChange}
           />
@@ -91,7 +91,7 @@ export function TodoList({
             options={priorityFilterOptions}
             value={filters.priority || ''}
             onChange={handlePriorityChange}
-            placeholder="優先度"
+            placeholder="Priority"
           />
           <Select
             options={completedFilterOptions}
@@ -101,25 +101,25 @@ export function TodoList({
                 : filters.completed.toString()
             }
             onChange={handleCompletedChange}
-            placeholder="完了状態"
+            placeholder="Completion Status"
           />
           <Button variant="outline" onClick={clearFilters}>
-            クリア
+            Clear
           </Button>
         </div>
       </div>
 
-      {/* Todoリスト */}
+      {/* Todo List */}
       <div className="space-y-4">
         {todos.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-500 text-lg">
               {Object.keys(filters).length > 0
-                ? 'フィルター条件に一致するTodoがありません'
-                : 'まだTodoがありません'}
+                ? 'No Todos match the filter criteria'
+                : 'No Todos yet'}
             </div>
             <p className="text-gray-400 mt-2">
-              新しいTodoを作成してみましょう！
+              Try creating a new Todo!
             </p>
           </div>
         ) : (

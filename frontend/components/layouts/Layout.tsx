@@ -40,10 +40,10 @@ export function Layout({ children }: LayoutProps) {
             
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-700">
-                こんにちは、{user?.name}さん
+                Hello, {user?.name}
               </span>
               <Button variant="outline" size="sm" onClick={handleLogout}>
-                ログアウト
+                Logout
               </Button>
             </div>
           </div>

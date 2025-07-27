@@ -1,4 +1,4 @@
-// API レスポンス関連の型定義
+// API response-related type definitions
 export interface ApiResponse<T = unknown> {
   data?: T;
   error?: string;
@@ -16,10 +16,10 @@ export interface ValidationError {
   message: string;
 }
 
-// HTTPメソッド
+// HTTP methods
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-// API設定
+// API configuration
 export interface ApiConfig {
   baseURL: string;
   timeout: number;

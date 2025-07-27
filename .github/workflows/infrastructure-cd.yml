@@ -278,10 +278,10 @@ jobs:
 
       - name: Verify Infrastructure
         run: |
-          # ELBのヘルスチェック
+          # ELB health check
           aws elbv2 describe-target-health --target-group-arn ${{ secrets.PROD_TARGET_GROUP_ARN }}
           
-          # ECSサービスの状態確認
+          # ECS service status check
           aws ecs describe-services --cluster todoapp-prod-cluster --services todoapp-prod-backend todoapp-prod-frontend
 
       - name: Notify deployment success
